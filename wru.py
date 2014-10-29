@@ -62,7 +62,8 @@ labels = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "S
 print "Total days: {}".format(totalDays)
 print "Number of days when at least one message was sent: {}".format(dayFrequency.sum())
 dayOfMaxMessages = np.argmax(totalMessagesEachDay)
-print "Maximum messages: {} on {} ({})".format(totalMessagesEachDay[dayOfMaxMessages], dt.datetime.strftime(dates[dayOfMaxMessages], "%b %d, %Y"), labels[dates[dayOfMaxMessages].weekday()])
+print "Total number of messages: {}".format(sum(totalMessagesEachDay))
+print "Maximum messages in a day: {} on {} ({})".format(totalMessagesEachDay[dayOfMaxMessages], dt.datetime.strftime(dates[dayOfMaxMessages], "%b %d, %Y"), labels[dates[dayOfMaxMessages].weekday()])
 
 # plot average daily messages
 days = np.arange(7, dtype=int)
