@@ -14,19 +14,21 @@ args = parser.parse_args()
 
 people={}
 for f in open(args.inputFile):
-	name=''
-	isMessage=None
+	hasNamelikeString=''
+	isMessageOrUpdate=None
 	try:
-		name = re.search(r'[A-z]+:|[A-z]+ [A-z]+:|\+1 \([0-9]+\) [0-9]+\-[0-9]+', f).group(0).strip(':')
-		isMessage = re.match(r'[A-Z][a-z][a-z] [0-9]+,', f)
+		hasNamelikeString = re.search(r'[A-z]+ *[A-z]*:|\+[0-9]+ \(?[0-9]+\)? [0-9]+[\- ][0-9]+.+:', f)
+		isMessageOrUpdate = re.match(r'[A-Z][a-z][a-z] [0-9]+,', f)
 	except:
 		pass
-	if name and isMessage:
+	if hasNamelikeString and isMessageOrUpdate:
+		name = re.match('[A-z]+ *[A-z]*|\+[0-9]+ \(?[0-9]+\)? [0-9]+[\- ][0-9]+', hasNamelikeString.group(0)).group(0)
 		if not name in people:
 			people[name] = 1
 		else:
 			people[name] += 1
 
+print "Total messages counted: {}".format(sum(people.values()))
 print "{:<30} {:<30}".format('Name','Number of messages')
 for k, v in people.iteritems():
     print "{:<30} {:<30}".format(k, v)

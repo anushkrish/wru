@@ -17,16 +17,15 @@ dailyTotalMessages = np.zeros(7)
 dayFrequency = np.zeros(7, dtype=int)
 firstDate = None
 for f in open(args.inputFile):
-	a = re.split(r'[ ,]', f)
 	dateString=''
 	# get the date in a format that python can understand
 	try:
-		lastTwoWords = "{} {}".format(a[-2], a[-1])
-		if re.match(r'[A-Z][a-z][a-z]', a[0]) and re.match(r'[0-9]|[0-9][0-9]', a[1]) and a[-1]!='joined\n' and lastTwoWords!='was removed\n':
-			if re.match(r'[0-9][0-9][0-9][0-9]', a[3]):
-				dateString = "{} {} {}".format(a[0], a[1], a[3])
-			else:
-				dateString = "{} {} {}".format(a[0], a[1], dt.datetime.now().year)
+		dateString = re.search(r'^[JFMAMSOND][aepuco][a-z] [0-9]+, ([0-9][0-9][0-9][0-9])*', f).group(0)
+		if not re.search(r'[0-9][0-9][0-9][0-9]$', dateString):
+			dateString = "{}{}".format(dateString, dt.date.today().year)
+		dateString = ' '.join(re.split(' ,|, |[ ,]', dateString))
+		if not re.search(r'[A-z]+ *[A-z]*:|\+[0-9]+ \(?[0-9]+\)? [0-9]+[\- ][0-9]+.+:', f):
+			dateString=''
 	except:
 		pass
 

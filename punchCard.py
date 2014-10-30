@@ -34,9 +34,11 @@ if __name__=="__main__":
 		try:
 			timeString = re.search(r'[0-9]*[0-9]:[0-9][0-9] [AP]M', f).group(0)
 			dateString = re.search(r'^[JFMAMSOND][aepuco][a-z] [0-9]+, ([0-9][0-9][0-9][0-9])*', f).group(0)
-			if not re.match(r'[0-9][0-9][0-9][0-9]', dateString.split()[-1]):
+			if not re.search(r'[0-9][0-9][0-9][0-9]$', dateString):
 				dateString = "{}{}".format(dateString, dt.date.today().year)
 			dateString = ' '.join(re.split(' ,|, |[ ,]', dateString))
+			if not re.search(r'[A-z]+ *[A-z]*:|\+[0-9]+ \(?[0-9]+\)? [0-9]+[\- ][0-9]+.+:', f):
+				dateString=''
 		except:
 			pass
 		if timeString and dateString:
@@ -52,7 +54,7 @@ if __name__=="__main__":
 	labels = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 	plt.clf()
 	plt.scatter(X, Y, s=hourlyMessages)
-	plt.title('Punch card')
+	plt.title('Number of messages sent during each hour of the week')
 	plt.xlabel('Hour of the day')
 	plt.yticks(y, labels)
 	plt.ylabel('Day of the week')
