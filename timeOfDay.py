@@ -28,11 +28,14 @@ if __name__=="__main__":
 		timeString=''
 		try:
 			timeString = re.search(r'[0-9]*[0-9]:[0-9][0-9] [AP]M', f).group(0)
+			if not re.search(r'[A-z]+ *[A-z]*:|\+[0-9]+ \(?[0-9]+\)? [0-9]+[\- ][0-9]+.+:', f):
+				timeString=''
 		except:
 			pass
 		if timeString:
 			hour = hourInteger(timeString)
-			hourlyMessages[hour]+=1	
+			hourlyMessages[hour]+=1
+	print "Total messages counted: {}".format(hourlyMessages.sum())
 
 	# plot number of messages sent each hour
 	hours = np.arange(24, dtype=int)
